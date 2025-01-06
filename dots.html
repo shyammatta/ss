@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel with Transition</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .carousel-container {
+    width: 500px;
+    overflow: hidden; /* Hide overflow for smooth sliding */
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Smooth sliding effect */
+  }
+  
+  .card {
+    min-width: 120px; /* Width of each card */
+    height: 120px;
+    margin: 5px;
+    flex-shrink: 0; /* Prevent cards from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: gray;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: blue; /* Active dot color */
+  }
+  
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  </style>
+</head>
+<body>
+  <div class="carousel-container">
+    <div id="cards_tech" class="carousel-track"></div>
+  </div>
+  <div id="dots" class="dots"></div>
+  <button id="prev-btn2">Previous</button>
+  <button id="next-btn2">Next</button>
+  <script src="script.js"></script>
+  <script>const technlogies = [
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/hubspot-logo.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/07/logo-salesforce.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/wp-icon.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/ontraport.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/googleads.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/ga-logo-2.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/google-search-console-icon-1.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/google-tag-managera.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/page-optimizer-logo.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/sitebulb-logo-1.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/woocommerce-logo.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/ahref.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/asana-png.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/elementor.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/gravity-forms-logo.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/05/hubstaff.png.webp" },
+    { image: "https://paradoxmarketing.io/wp-content/webp-express/webp-images/uploads/2021/07/shopify.png.webp" },
+  ];
+  
+  const cardsContainer1 = document.getElementById("cards_tech");
+  const dotsContainer = document.getElementById("dots");
+  let currentIndex1 = 0; // Current index of the first visible image
+  
+  const visibleCards = 4; // Number of visible images on the screen
+  const cardWidth = 130; // Approximate width of each card (including margin)
+  
+  // Function to render cards
+  function renderCards1() {
+    cardsContainer1.innerHTML = ""; // Clear existing cards
+    technlogies.forEach((person) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${person.image}" alt="Technology Image">
+      `;
+      cardsContainer1.appendChild(card);
+    });
+  
+    // Set the width of the track dynamically
+    cardsContainer1.style.width = `${technlogies.length * cardWidth}px`;
+  }
+  
+  // Function to render dots
+  function renderDots() {
+    dotsContainer.innerHTML = ""; // Clear existing dots
+    const numDots = Math.ceil(technlogies.length / visibleCards); // Total number of slides
+  
+    for (let i = 0; i < numDots; i++) {
+      const dot = document.createElement("div");
+      dot.className = "dot";
+      if (i === Math.floor(currentIndex1 / visibleCards)) {
+        dot.classList.add("active");
+      }
+      dotsContainer.appendChild(dot);
+  
+      // Add click event to navigate to specific slide
+      dot.addEventListener("click", () => {
+        currentIndex1 = i * visibleCards; // Update index
+        renderCarousel();
+      });
+    }
+  }
+  
+  // Function to render the entire carousel
+  function renderCarousel() {
+    const translateX = -(currentIndex1 * cardWidth); // Calculate translateX value
+    cardsContainer1.style.transform = `translateX(${translateX}px)`; // Slide the track
+  
+    renderDots(); // Update dots
+  }
+  
+  // Event listeners for buttons
+  document.getElementById("prev-btn2").addEventListener("click", () => {
+    currentIndex1 = (currentIndex1 - 1 + technlogies.length) % technlogies.length; // Move to the previous image
+    renderCarousel();
+  });
+  
+  document.getElementById("next-btn2").addEventListener("click", () => {
+    currentIndex1 = (currentIndex1 + 1) % technlogies.length; // Move to the next image
+    renderCarousel();
+  });
+  
+  // Initial render
+  renderCards1();
+  renderCarousel();
+  </script>
+</body>
+</html>
